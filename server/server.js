@@ -13,6 +13,6 @@ const io = socketIo(server, {
     }
 });
 
-const ioHandlers = require('socket.js')(io);
+const ioHandlers = require('./socket.js')(io);
 
 server.listen(port, () => console.log(`Listening on port ${port}`));

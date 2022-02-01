@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import socketIOClient from 'socket.io-client';
+import './App.css';
 const ENDPOINT = 'http://127.0.0.1:4001';
 
 function App() {
@@ -18,6 +19,27 @@ function App() {
         socket.on('user_rejected', (msg) => {
             let error = document.getElementById('error');
             error.innerText = msg;
+        });
+        socket.on('new_board', (board) => {
+            let letters = ['B', 'I', 'N', 'G', 'O'];
+            let boardTable = document.getElementById('board');
+
+            // Create individual cells on the board
+            for (let i = 0; i < 5; i++) {
+                let row  = document.createElement('tr');
+                row.classList.add('board-row')
+                for (let j = 0; j < 5; j++) {
+                    let cell = document.createElement('td');
+                    cell.classList.add('board-cell')
+                    let text = letters[i] + board[i][j];
+                    if (text === 'N0') {
+                        text = 'Free'
+                    }
+                    cell.innerText = text;
+                    row.appendChild(cell);
+                }
+                boardTable.appendChild(row);
+            }
         });
 
         // Name input handling
@@ -46,19 +68,6 @@ function App() {
                 </ul>
             </div>
             <table id='board'>
-                <tr>
-                </tr>
-                <tr>
-                </tr>
-                <tr>
-
-                </tr>
-                <tr>
-
-                </tr>
-                <tr>
-
-                </tr>
             </table>
         </div>
     );

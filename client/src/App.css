@@ -1,3 +1,32 @@
 .App {
-  text-align: center;
+}
+
+.users {
+    float: left;
+    border: 1px solid black;
+    height: 50vh;
+    padding: 5%;
+    margin-right: 5%;
+}
+
+h2 {
+    top: 0;
+}
+
+#board {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 2em;
+}
+
+.board-row {
+    display: block;
+    float: left;
+}
+
+.board-cell {
+    border: 1px solid black;
+    display: block;
+    width: 5vw;
+    padding: 25% 0;
 }
