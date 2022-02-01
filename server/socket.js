@@ -128,7 +128,7 @@ module.exports = (io) => {
 
                 // Start the game once the target number of users is met
                 if (users.size === targetUsers) {
-                    ballInterval = setInterval(pullBall, 1000);
+                    ballInterval = setInterval(pullBall, 4000);
                 }
             }
         });
