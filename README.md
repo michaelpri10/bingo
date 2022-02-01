@@ -6,15 +6,19 @@ The client and server application must be run separately from each other.
 
 For the server, run:
 
-`cd server`
-`npm install`
-`npm start`
+```
+cd server
+npm install
+npm start
+```
 
 For the client, run in a separate terminal:
 
-`cd client`
-`npm install`
-`npm start`
+```
+cd client
+npm install
+npm start
+```
 
 Currently, 3 players must be logged on concurrently to start the game. The BINGO button should be clicked when a user thinks that they have a winning Bingo board.
 
