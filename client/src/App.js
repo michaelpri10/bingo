@@ -33,13 +33,60 @@ function App() {
                     cell.classList.add('board-cell')
                     let text = letters[i] + board[i][j];
                     if (text === 'N0') {
-                        text = 'Free'
+                        text = 'Free';
+                        cell.style.backgroundColor = 'red';
+
+                    }
+                    else {
+                        cell.style.backgroundColor = 'white';
                     }
                     cell.innerText = text;
+                    cell.addEventListener('click', (e) => {
+                        let target = e.target;
+                        if (target.style.backgroundColor === 'white') {
+                            target.style.backgroundColor = 'red';
+                        }
+                        else {
+                            target.style.backgroundColor = 'white';
+                        }
+                    });
                     row.appendChild(cell);
                 }
                 boardTable.appendChild(row);
+                boardTable.style.display = 'table';
+                let bingoButton = document.getElementById('bingo-button');
+                bingoButton.style.display = 'block';
+                let ballList = document.getElementById('ball-list');
+                ballList.style.display = 'flex';
             }
+        });
+        socket.on('new_ball', (number) => {
+            let ballList = document.getElementById('ball-list');
+            let ball = document.createElement('div');
+            ball.classList.add('ball');
+            ball.innerText = number;
+            ballList.appendChild(ball);
+        });
+        socket.on('winner', (data) => {
+            // Check if the ID of the winner matches the ID of the current user
+            let winner_id = data['id'];
+            let winner_name = data['username'];
+            if (winner_id === socket.id) {
+                alert(`Congratulations ${winner_name}, you won!`);
+            }
+            else {
+                alert(`Sorry, ${winner_name} won this bingo game!`);
+            }
+        });
+        socket.on('no_bingo', () => {
+            alert('Sorry, you do not have bingo yet!');
+        });
+
+
+        // Bingo handling
+        const bingoButton = document.getElementById('bingo-button');
+        bingoButton.addEventListener('click', () => {
+            socket.emit('bingo')
         });
 
         // Name input handling
@@ -48,6 +95,7 @@ function App() {
             let username = document.getElementById('username').value;
             socket.emit('new_user', username);
         });
+
     }, []);
 
     return (
@@ -59,16 +107,23 @@ function App() {
                 <button id='join-button'>Join</button>
                 <p id='error'></p>
             </div>
-            <div className='users'>
-                <h2>Users {users.length}/5</h2>
-                <ul id='users-list'>
-                {users.map((user, index) => (
-                    <li key={index}>{user}</li>
-                ))}
-                </ul>
+            <div className='container'>
+                <div className='users'>
+                    <h2>Users {users.length}/3</h2>
+                    <ul id='users-list'>
+                    {users.map((user, index) => (
+                        <li key={index}>{user}</li>
+                    ))}
+                    </ul>
+                </div>
+                <div className='board-container'>
+                    <table id='board'>
+                    </table>
+                    <button id='bingo-button'>BINGO</button>
+                </div>
+                <div id='ball-list'>
+                </div>
             </div>
-            <table id='board'>
-            </table>
         </div>
     );
 }
